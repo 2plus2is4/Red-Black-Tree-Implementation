@@ -55,7 +55,17 @@ public class RedBlackTree implements IRedBlackTree {
 
     @Override
     public void insert(Comparable key, Object value) {
+        if(root==null){
+            root = new INode();
+            root.setKey(key);
+            root.setValue(value);
+            return;
+        } 
+        BSTInsertion(key, value, node);
+    }
 
+    private void BSTInsertion(Comparable key, Object value, INode node){
+        
     }
 
     @Override
