@@ -2,6 +2,8 @@ package eg.edu.alexu.csd.filestructure.redblacktree;
 
 public class RedBlackTree implements IRedBlackTree {
     private INode root;
+    private INode nil=new Node();
+
     @Override
     public INode getRoot() {
         return this.root;
@@ -9,9 +11,8 @@ public class RedBlackTree implements IRedBlackTree {
 
     @Override
     public boolean isEmpty() {
-        if(root.isNull())
-            return true;
-        return false;
+        return (root.isNull());
+
     }
 
     @Override
@@ -47,10 +48,8 @@ public class RedBlackTree implements IRedBlackTree {
 
     @Override
     public boolean contains(Comparable key) {
-        if(this.search(key)!=null){
-            return true;
-        }
-        return false;
+        return (this.search(key)!=null);
+
     }
 
     @Override

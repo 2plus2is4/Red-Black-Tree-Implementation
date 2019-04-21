@@ -69,8 +69,6 @@ public class Node implements INode {
 
     @Override
     public boolean isNull() {
-        if(this.value==null&&left==null&&right==null)
-            return true;
-        return false;
+        return (this.value==null&&left==null&&right==null);
     }
 }
