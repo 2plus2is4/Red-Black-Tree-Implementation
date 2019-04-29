@@ -1,5 +1,7 @@
 package eg.edu.alexu.csd.filestructure.redblacktree;
 
+import static eg.edu.alexu.csd.filestructure.redblacktree.RedBlackTree.nil;
+
 public class Node implements INode {
     private INode p;
     private INode left;
@@ -69,6 +71,6 @@ public class Node implements INode {
 
     @Override
     public boolean isNull() {
-        return (this.value==null&&left==null&&right==null);
+        return (this == nil);
     }
 }

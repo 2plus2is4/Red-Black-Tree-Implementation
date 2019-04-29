@@ -1,5 +1,7 @@
 package eg.edu.alexu.csd.filestructure.redblacktree;
 
+import javax.management.RuntimeErrorException;
+
 public interface IRedBlackTree<T extends Comparable<T>, V> {
 
     /**
@@ -39,7 +41,7 @@ public interface IRedBlackTree<T extends Comparable<T>, V> {
      * @param key to be inserted
      * @param value the associated value with the given key
      */
-    public void insert(T key, V value);
+    public void insert(T key, V value) throws RuntimeErrorException;
 
     /**
      * Delete the node associated with the given key.
