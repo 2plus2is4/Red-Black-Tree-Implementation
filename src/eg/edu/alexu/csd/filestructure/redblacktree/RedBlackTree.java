@@ -120,7 +120,150 @@ public class RedBlackTree implements IRedBlackTree {
 
     @Override
     public boolean delete(Comparable key) {
-        return false;
+        INode z = (INode) search(key);
+        if (z == null)
+            return false;
+        INode y = (INode) search(key);
+        boolean originalColor = y.getColor();
+
+        INode x;
+        if (z.getLeftChild() == nil) {
+            x = z.getRightChild();
+            transplant(z, z.getRightChild());
+        } else if (z.getRightChild() == nil) {
+            x = z.getLeftChild();
+            transplant(z, z.getLeftChild());
+        } else {
+            y = min(z.getRightChild());
+            originalColor = y.getColor();
+            x = y.getRightChild();
+            if (y.getParent() == z)
+                x.setParent(y);
+            else {
+                transplant(y, y.getRightChild());
+                y.setRightChild(z.getRightChild());
+                y.getRightChild().setParent(y);
+            }
+            transplant(z, y);
+            y.setLeftChild(z.getLeftChild());
+            y.getLeftChild().setParent(y);
+            y.setColor(z.getColor());
+        }
+        if (!originalColor) {
+            fix(x);
+        }
+
+        return true;
+
+    }
+
+    private void fix(INode x) {
+        while (x != getRoot() && !x.getColor()) {
+            if (x.getParent().getLeftChild() == x) {
+                INode w = x.getParent().getRightChild();
+                if (w.getColor()) {
+                    w.setColor(false);
+                    x.getParent().setColor(true);
+                    leftRotate(x);
+                    w = x.getParent().getRightChild();
+                }
+                if (!w.getLeftChild().getColor() && !w.getRightChild().getColor()) {
+                    w.setColor(true);
+                    x = x.getParent();
+                } else {
+                    if (!w.getRightChild().getColor()) {
+                        w.getLeftChild().setColor(false);
+                        w.setColor(true);
+                        rightRotate(w);
+                        w = x.getParent().getRightChild();
+                    }
+                    // Case 4, w = black, w.right = red
+                    w.setColor(x.getParent().getColor());
+                    x.getParent().setColor(false);
+                    w.getRightChild().setColor(false);
+                    leftRotate(x.getParent());
+                    x = root;
+                }
+            } else {
+                INode w = x.getParent().getLeftChild();
+                if (w.getColor()) {
+                    w.setColor(false);
+                    x.getParent().setColor(true);
+                    rightRotate(x);
+                    w = x.getParent().getLeftChild();
+                }
+                if (!w.getRightChild().getColor() && !w.getLeftChild().getColor()) {
+                    w.setColor(true);
+                    x = x.getParent();
+                } else {
+                    if (!w.getLeftChild().getColor()) {
+                        w.getRightChild().setColor(false);
+                        w.setColor(true);
+                        leftRotate(w);
+                        w = x.getParent().getLeftChild();
+                    }
+                    // Case 4, w = black, w.right = red
+                    w.setColor(x.getParent().getColor());
+                    x.getParent().setColor(false);
+                    w.getLeftChild().setColor(false);
+                    rightRotate(x.getParent());
+                    x = root;
+                    //anothorone
+                }
+            }
+        }
+    }
+
+    private void leftRotate(INode x) {
+        INode y = x.getRightChild();
+        x.setRightChild(y.getLeftChild());
+        if (y.getLeftChild() != nil) {
+            y.getLeftChild().setParent(x);
+        }
+        y.setParent(x.getParent());
+        if (x.getParent() == nil)
+            root = y;
+        else if (x == x.getParent().getLeftChild())
+            x.getParent().setLeftChild(y);
+        else
+            x.getParent().setRightChild(y);
+
+        y.setLeftChild(x);
+        x.setParent(y);
+    }
+
+    private void rightRotate(INode x) {
+        INode y = x.getLeftChild();
+        x.setLeftChild(y.getRightChild());
+        if (y.getRightChild() != nil)
+            y.getRightChild().setParent(x);
+        y.setParent(x.getParent());
+        if (x.getParent() == nil)
+            root = y;
+        else if (x == x.getParent().getRightChild())
+            x.getParent().setRightChild(y);
+        else
+            x.getParent().setLeftChild(y);
+
+        y.setRightChild(x);
+        x.setParent(y);
+    }
+
+    private INode min(INode n) {
+        INode current = n;
+        while (current.getLeftChild() != null)
+            current = current.getLeftChild();
+        return current;
+    }
+
+    private void transplant(INode n, INode m) {
+        if (n.getParent() == nil)
+            root = m;
+        else if (n == n.getParent().getLeftChild())
+            n.getParent().setLeftChild(m);
+        else
+            n.getParent().setRightChild(m);
+        m.setParent(n.getParent());
     }
 
 }
