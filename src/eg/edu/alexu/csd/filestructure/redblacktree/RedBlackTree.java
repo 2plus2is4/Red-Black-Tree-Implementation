@@ -93,10 +93,10 @@ public class RedBlackTree implements IRedBlackTree {
 
                     if (parent.getLeftChild() == node) {
                         //right left
-                        coloring.RightLeft(node,parent,grandpa);
+                        coloring.RightLeft(node, parent, grandpa);
                     } else {
                         //right right
-                        coloring.RightRight(node,parent,grandpa);
+                        coloring.RightRight(node, parent, grandpa);
                     }
                 }
             }
