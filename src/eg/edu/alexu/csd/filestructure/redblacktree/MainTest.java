@@ -6,6 +6,8 @@ import java.util.Random;
 public class MainTest {
     public static void main(String[] args) {
         IRedBlackTree<Integer,String> redBlackTree = new RedBlackTree();
+        Integer x = 15;
+        Class c = x.getClass();
 //        System.out.println(redBlackTree.isEmpty());
 //        redBlackTree.insert(5, "one");
 //        redBlackTree.insert(3, "two");
