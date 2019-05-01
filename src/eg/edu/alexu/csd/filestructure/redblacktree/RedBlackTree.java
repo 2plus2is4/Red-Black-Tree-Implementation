@@ -48,31 +48,31 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
         if (key == null || value == null) {
             throw new RuntimeErrorException(new Error());
         }
-        INode<T,V> z = new Node<>();
-        z.setKey(key);
-        z.setValue(value);
-        INode<T,V> x = this.root;
-        INode<T,V> y = nil;
-        while (!x.isNull()) {
-            y = x;
-            if (z.getKey().compareTo(x.getKey()) == 0) {
-                x.setValue(value);
+        INode<T,V> znode = new Node<>();
+        znode.setKey(key);
+        znode.setValue(value);
+        INode<T,V> xnode = this.root;
+        INode<T,V> ynode = nil;
+        while (!xnode.isNull()) {
+            ynode = xnode;
+            if (znode.getKey().compareTo(xnode.getKey()) == 0) {
+                xnode.setValue(value);
                 return;
             }
-            if (z.getKey().compareTo(x.getKey()) < 0)
-                x = x.getLeftChild();
-            else x = x.getRightChild();
+            if (znode.getKey().compareTo(xnode.getKey()) < 0)
+                xnode = xnode.getLeftChild();
+            else xnode = xnode.getRightChild();
         }
-        z.setParent(y);
-        if (y.isNull())
-            this.root = z;
-        else if (z.getKey().compareTo(y.getKey()) < 0)
-            y.setLeftChild(z);
-        else y.setRightChild(z);
-        z.setLeftChild(nil);
-        z.setRightChild(nil);
-        z.setColor(true);
-        insertFix(z);
+        znode.setParent(ynode);
+        if (ynode.isNull())
+            this.root = znode;
+        else if (znode.getKey().compareTo(ynode.getKey()) < 0)
+            ynode.setLeftChild(znode);
+        else ynode.setRightChild(znode);
+        znode.setLeftChild(nil);
+        znode.setRightChild(nil);
+        znode.setColor(true);
+        insertFix(znode);
     }
 
     private void insertFix(INode<T,V> z) {
@@ -218,39 +218,38 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
         x.setColor(false);
     }
 
-    private void leftRotate(INode<T,V> x) {
-        INode<T,V> y = x.getRightChild();
-        x.setRightChild(y.getLeftChild());
-        if (!y.getLeftChild().isNull()) {
-            y.getLeftChild().setParent(x);
+    private void leftRotate(INode<T,V> node1) {
+        INode<T,V> node2 = node1.getRightChild();
+        node1.setRightChild(node2.getLeftChild());
+        if (!node2.getLeftChild().isNull()) {
+            node2.getLeftChild().setParent(node1);
         }
-        y.setParent(x.getParent());
-        if (x.getParent().isNull())
-            root = y;
-        else if (x == x.getParent().getLeftChild())
-            x.getParent().setLeftChild(y);
+        node2.setParent(node1.getParent());
+        if (node1.getParent().isNull())
+            root = node2;
+        else if (node1 == node1.getParent().getLeftChild())
+            node1.getParent().setLeftChild(node2);
         else
-            x.getParent().setRightChild(y);
+            node1.getParent().setRightChild(node2);
 
-        y.setLeftChild(x);
-        x.setParent(y);
+        node2.setLeftChild(node1);
+        node1.setParent(node2);
     }
 
-    private void rightRotate(INode<T,V> x) {
-        INode<T,V> y = x.getLeftChild();
-        x.setLeftChild(y.getRightChild());
-        if (!y.getRightChild().isNull())
-            y.getRightChild().setParent(x);
-        y.setParent(x.getParent());
-        if (x.getParent().isNull())
-            root = y;
-        else if (x == x.getParent().getRightChild())
-            x.getParent().setRightChild(y);
+    private void rightRotate(INode<T,V> node1) {
+        INode<T,V> node2 = node1.getLeftChild();
+        node1.setLeftChild(node2.getRightChild());
+        if (!node2.getRightChild().isNull())
+            node2.getRightChild().setParent(node1);
+        node2.setParent(node1.getParent());
+        if (node1.getParent().isNull())
+            root = node2;
+        else if (node1 == node1.getParent().getRightChild())
+            node1.getParent().setRightChild(node2);
         else
-            x.getParent().setLeftChild(y);
-
-        y.setRightChild(x);
-        x.setParent(y);
+            node1.getParent().setLeftChild(node2);
+        node2.setRightChild(node1);
+        node1.setParent(node2);
     }
 
     private INode<T,V> min(INode<T,V> n) {

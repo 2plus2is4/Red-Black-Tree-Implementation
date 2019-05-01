@@ -53,7 +53,6 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
     private void inline(INode<T, V> node, T key) {
         if (node.isNull()) return;
         inline(node.getLeftChild(), key);
-        // TODO: 5/1/2019 do something
         if (key == null)
 //            arrayList.add(node);
             arrayList.add(new AbstractMap.SimpleEntry<>(node.getKey(), node.getValue()));
@@ -216,7 +215,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
         if (node.getKey() == null)
             if (node != redBlackTree.getRoot() && node == redBlackTree.getRoot().getParent()) {
                 stack.pop();
-                INode x = stack.pop();
+                INode<T, V> x = stack.pop();
                 stack = new Stack<>();
                 return x;
             } else throw new RuntimeErrorException(new Error());
