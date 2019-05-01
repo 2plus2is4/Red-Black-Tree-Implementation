@@ -43,14 +43,9 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
     @Override
     public Set<Map.Entry<T, V>> entrySet() {
-        Set<Map.Entry<T, V>> set = new LinkedHashSet<>();
-        INode<T, V> node = redBlackTree.getRoot();
-        Stack<INode<T, V>> stack = new Stack<>();
         arrayList = new ArrayList<>();
         inline(redBlackTree.getRoot(), null);
-        for (int i = 0; i < arrayList.size(); i++)
-            set.add(arrayList.get(i));
-        return set;
+        return new LinkedHashSet<>(arrayList);
     }
 
     private ArrayList<Map.Entry<T, V>> arrayList = new ArrayList<>();
@@ -131,8 +126,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
         Set<T> keys = new LinkedHashSet<>();
         arrayList = new ArrayList<>();
         inline(redBlackTree.getRoot(), null);
-        for (int i = 0; i < arrayList.size(); i++) {
-            keys.add(arrayList.get(i).getKey());
+        for (Map.Entry<T, V> anArrayList : arrayList) {
+            keys.add(anArrayList.getKey());
         }
         return keys;
     }
