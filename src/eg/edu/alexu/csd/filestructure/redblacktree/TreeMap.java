@@ -44,22 +44,22 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
     @Override
     public Set<Map.Entry<T, V>> entrySet() {
         arrayList = new ArrayList<>();
-        inline(redBlackTree.getRoot(), null);
+        inorder(redBlackTree.getRoot(), null);
         return new LinkedHashSet<>(arrayList);
     }
 
     private ArrayList<Map.Entry<T, V>> arrayList = new ArrayList<>();
 
-    private void inline(INode<T, V> node, T key) {
+    private void inorder(INode<T, V> node, T key) {
         if (node.isNull()) return;
-        inline(node.getLeftChild(), key);
+        inorder(node.getLeftChild(), key);
         if (key == null)
 //            arrayList.add(node);
             arrayList.add(new AbstractMap.SimpleEntry<>(node.getKey(), node.getValue()));
         else if (node.getKey().compareTo(key) <= 0)
 //            arrayList.add(node);
             arrayList.add(new AbstractMap.SimpleEntry<>(node.getKey(), node.getValue()));
-        inline(node.getRightChild(), key);
+        inorder(node.getRightChild(), key);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
         V temp = redBlackTree.search(key);
         if (temp == null) {
             arrayList = new ArrayList<>();
-            inline(redBlackTree.getRoot(), key);
+            inorder(redBlackTree.getRoot(), key);
             return arrayList.get(arrayList.size() - 1);
         } else return new AbstractMap.SimpleEntry<>(key, temp);
     }
@@ -106,7 +106,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
     public ArrayList<Map.Entry<T, V>> headMap(T toKey) {
         if (toKey == null) throw new RuntimeErrorException(new Error());
         arrayList = new ArrayList<>();
-        inline(redBlackTree.getRoot(), toKey);
+        inorder(redBlackTree.getRoot(), toKey);
         if (arrayList.get(arrayList.size() - 1).getKey().compareTo(toKey) == 0)
             arrayList.remove(arrayList.size() - 1);
         return arrayList;
@@ -116,7 +116,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
     public ArrayList<Map.Entry<T, V>> headMap(T toKey, boolean inclusive) {
         if (toKey == null) throw new RuntimeErrorException(new Error());
         arrayList = new ArrayList<>();
-        inline(redBlackTree.getRoot(), toKey);
+        inorder(redBlackTree.getRoot(), toKey);
         return inclusive ? arrayList : headMap(toKey);
     }
 
@@ -124,7 +124,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
     public Set<T> keySet() {
         Set<T> keys = new LinkedHashSet<>();
         arrayList = new ArrayList<>();
-        inline(redBlackTree.getRoot(), null);
+        inorder(redBlackTree.getRoot(), null);
         for (Map.Entry<T, V> anArrayList : arrayList) {
             keys.add(anArrayList.getKey());
         }
@@ -200,7 +200,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
     @Override
     public Collection<V> values() {
         arrayList = new ArrayList<>();
-        inline(redBlackTree.getRoot(), null);
+        inorder(redBlackTree.getRoot(), null);
         ArrayList<V> ans = new ArrayList<>();
         for (Map.Entry<T, V> entry : arrayList) {
             ans.add(entry.getValue());
