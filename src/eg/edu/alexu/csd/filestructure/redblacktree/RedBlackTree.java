@@ -48,31 +48,31 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
         if (key == null || value == null) {
             throw new RuntimeErrorException(new Error());
         }
-        INode<T,V> znode = new Node<>();
-        znode.setKey(key);
-        znode.setValue(value);
-        INode<T,V> xnode = this.root;
-        INode<T,V> ynode = nil;
-        while (!xnode.isNull()) {
-            ynode = xnode;
-            if (znode.getKey().compareTo(xnode.getKey()) == 0) {
-                xnode.setValue(value);
+        INode<T,V> node_z = new Node<>();
+        node_z.setKey(key);
+        node_z.setValue(value);
+        INode<T,V> nx = this.root;
+        INode<T,V> ny = nil;
+        while (!nx.isNull()) {
+            ny = nx;
+            if (node_z.getKey().compareTo(nx.getKey()) == 0) {
+                nx.setValue(value);
                 return;
             }
-            if (znode.getKey().compareTo(xnode.getKey()) < 0)
-                xnode = xnode.getLeftChild();
-            else xnode = xnode.getRightChild();
+            if (node_z.getKey().compareTo(nx.getKey()) < 0)
+                nx = nx.getLeftChild();
+            else nx = nx.getRightChild();
         }
-        znode.setParent(ynode);
-        if (ynode.isNull())
-            this.root = znode;
-        else if (znode.getKey().compareTo(ynode.getKey()) < 0)
-            ynode.setLeftChild(znode);
-        else ynode.setRightChild(znode);
-        znode.setLeftChild(nil);
-        znode.setRightChild(nil);
-        znode.setColor(true);
-        insertFix(znode);
+        node_z.setParent(ny);
+        if (ny.isNull())
+            this.root = node_z;
+        else if (node_z.getKey().compareTo(ny.getKey()) < 0)
+            ny.setLeftChild(node_z);
+        else ny.setRightChild(node_z);
+        node_z.setLeftChild(nil);
+        node_z.setRightChild(nil);
+        node_z.setColor(true);
+        insertFix(node_z);
     }
 
     private void insertFix(INode<T,V> z) {
@@ -211,7 +211,7 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
                     w.getLeftChild().setColor(false);
                     rightRotate(x.getParent());
                     x = root;
-                    //anothorone
+                    //another one
                 }
             }
         }
